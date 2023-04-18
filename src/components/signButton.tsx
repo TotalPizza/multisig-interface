@@ -3,6 +3,7 @@ import React from 'react';
 import detectEthereumProvider from '@metamask/detect-provider';
 import Web3 from 'web3';
 import styles from '@/styles/Home.module.css';
+import { ethers } from "ethers";
 
 export interface SignMessageProps {
   contract_address: string;
@@ -68,11 +69,12 @@ export default function SignMessage(props: {contract_address: string, selector: 
             alert('Error signing message');
             return;
           }
+          let signatures = ethers.utils.splitSignature(result.result);
           props.onSign({
             contract_address: props.contract_address,
             selector: props.selector,
             calldata: props.calldata,
-            signatures: [result.result]
+            signatures: [signatures.r,signatures.s,String(signatures.v)]
           });
         }
       );

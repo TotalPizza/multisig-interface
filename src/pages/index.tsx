@@ -237,9 +237,11 @@ export default function Home() {
                       </td>
                       <td>
                         <div>
-                          <span>1/1</span>
+                          <span>{"s: "+message.signatures[0]}</span>
                           <br/>
-                          <span>{message.signatures[index]}</span>
+                          <span>{"r: "+message.signatures[1]}</span>
+                          <br/>
+                          <span>{"v: "+message.signatures[2]}</span>
                         </div>
                       </td>
                       <td>
