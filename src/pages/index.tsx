@@ -13,7 +13,7 @@ export default function Home() {
   const [toAddress, setToAddress] = useState('');
   const [signedMessages, setSignedMessages] = useState<SignMessageProps[]>([]);
   const [selectedMessage, setSelectedMessage] = useState<SignMessageProps>();
-  const [verifyingContract, setVerifyingContract] = useState('0x0498215a352045e527079a8da96fa65b9ead7325f1179313078f500872eeb0d0');
+  const [verifyingContract, setVerifyingContract] = useState('0x06d324601b008ba0393e541a3b8f4aab5b9c07a2298f5175d316664ae863728f');
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [contractSelectors, setContractSelectors] = useState<string[]>([]);
   const [contractFunctions, setContractFunctions] = useState<Selectors[]>([]);
@@ -186,6 +186,7 @@ export default function Home() {
               <SignMessage
                 contract_address={toAddress}
                 selector={selectedFunction}
+                nonce={multisigNonce}
                 calldataNames={calldataNames}
                 calldata={calldata}
                 verifyingContract={verifyingContract}

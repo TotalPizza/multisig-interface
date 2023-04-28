@@ -4,6 +4,7 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import Web3 from 'web3';
 import styles from '@/styles/Home.module.css'
 import {SignMessageProps} from '@/components/signButton';
+import {uint256} from 'starknet'
 
 interface InteractWithContractProps {
   contract_address: string;
@@ -36,13 +37,25 @@ const ExecuteTransaction: React.FC<InteractWithContractProps> = ({
       const selector = web3.utils.asciiToHex(calldata.selector);
 
       // transform calldata.calldata array to array of hex strings
-      const calldataArr = calldata.calldata.map((data) => {
+      // this doesn't cover all cases
+      let calldataArr = calldata.calldata.map((data) => {
         if (isNaN(Number(data))) {
           return web3.utils.asciiToHex(data);
         }else{
           return data;
         }
       });
+
+      // Split signatures into uint256 high and low
+      let transformed_signatures: string[] = [];
+      transformed_signatures.push(uint256.bnToUint256(calldata.signatures[0]).low.toString());
+      transformed_signatures.push(uint256.bnToUint256(calldata.signatures[0]).high.toString());
+      transformed_signatures.push(uint256.bnToUint256(calldata.signatures[1]).low.toString());
+      transformed_signatures.push(uint256.bnToUint256(calldata.signatures[1]).high.toString());
+      transformed_signatures.push(calldata.signatures[2].toString());
+      
+      // Attach the calldata to the end of the signature array
+      calldataArr = transformed_signatures.concat(calldataArr);
 
       // Call the contract function
       const transactionParameters = {
